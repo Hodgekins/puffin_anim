@@ -1,0 +1,5 @@
+name: Puffin Anim
+type: module
+description: GSAP animation classes
+package: Custom
+core_version_requirement: ^9 || ^10
