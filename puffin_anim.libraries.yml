@@ -1,0 +1,6 @@
+anim:
+  version: 1.x
+  js:
+    node_modules/gsap/dist/gsap.min.js: {}
+    node_modules/gsap/dist/ScrollTrigger.min.js: {}
+    js/anim.js: {}
