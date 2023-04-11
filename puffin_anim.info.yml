@@ -3,6 +3,4 @@ type: module
 description: GSAP animation classes
 package: Custom
 core_version_requirement: ^9 || ^10
-libraries:
-    - puffin_anim/anim
 
