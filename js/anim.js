@@ -1,111 +1,126 @@
+// FUNCTIONS
+
+/**
+ * Fades in and up the selector passed in.
+ */
+function animFadeIn(selector) {
+  const item = document.querySelector(selector); 
+  item.classList.remove("d-none");
+  gsap.set(item, {
+    opacity: 0,
+    y: 20
+  });
+  gsap.to(item, {
+    duration: 0.4,
+    opacity: 1,
+    y: 0,
+  });
+}
+
+/**
+ * Fades out and down the selector passed in.
+ */
+function animFadeOut(selector) {
+  const item = document.querySelector(selector); 
+  gsap.set(item, {
+    opacity: 1,
+    y: 0
+  });
+  gsap.to(item, {
+    opacity: 0,
+    y: 20,
+    onComplete: () => {
+      item.classList.add("d-none");
+    }
+  });
+}
+
+/**
+ * Fades in and up the selector passed in.
+ */
+function animContainerFadeIn(selector) {
+  const item = document.querySelector(selector); 
+  item.classList.remove("d-none");
+  gsap.set(item.children, {
+    opacity: 0,
+    y: 20
+  });
+  gsap.to(item.children, {
+    duration: 0.4,
+    opacity: 1,
+    y: 0,
+    stagger: 0.1
+  });
+}
+
+/**
+ * Replace an element
+ */
+function animReplace(selectorToHide, selectorToShow) {
+
+  const itemToHide = document.querySelector(selectorToHide);
+  const itemToShow = document.querySelector(selectorToShow);
+
+  const tl = gsap.timeline({});
+  tl.to(itemToHide, {
+    duration: 0.4,
+    opacity: 0,
+    y: -20,
+    onComplete: () => {
+      itemToHide.classList.add("d-none");
+      itemToShow.classList.remove("d-none");
+    }
+  }).staggerFromTo(
+    itemToShow,
+    0.4,
+    {
+      y: 20,
+      opacity: 0
+    },
+    {
+      y: 0,
+      opacity: 1
+    },
+    0.1
+  );
+}
+
+/**
+ * Replace containers' children staggered
+ */ 
+function animContainerReplace(selectorToHide, selectorToShow) {
+
+  const itemToHide = document.querySelector(selectorToHide);
+  const itemToShow = document.querySelector(selectorToShow);
+
+  const tl = gsap.timeline({});
+  tl.to(itemToHide.children, {
+    duration: 0.4,
+    stagger: 0.1,
+    opacity: 0,
+    y: -20,
+    onComplete: () => {
+      itemToHide.classList.add("d-none");
+      itemToShow.classList.remove("d-none");
+    }
+  }).staggerFromTo(
+    itemToShow.children,
+    0.4,
+    {
+      y: 20,
+      opacity: 0
+    },
+    {
+      y: 0,
+      opacity: 1
+    },
+    0.1
+  );
+}
+
+// CLASSES
+
 gsap.registerPlugin(ScrollTrigger);
-
-/**
- * Elements that gain anim-fade-in or anim-fade-out will fade in (or out)
- *
- * Elements that gain anim-container-replace will fade one container's children out (staggered) 
- * and another container's children in (staggered)
- * [data-anim-hide] is the container whose child elements will be hidden.
- * [data-anim-show] is the container whose child elements will be shown.
- */
-(function() {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === "attributes" && mutation.attributeName === "class") {
-        if (
-          !mutation.oldValue.includes("anim-fade-in") &&
-          mutation.target.classList.contains("anim-fade-in")
-        ) {
-          mutation.target.classList.remove("d-none");
-          gsap.set(mutation.target, {
-            opacity: 0,
-            y: 20
-          });
-          gsap.to(mutation.target, {
-            duration: 1,
-            opacity: 1,
-            y: 0,
-            onComplete: () => {
-              mutation.target.classList.remove("anim-fade-in");
-            }
-          });
-        }
-        if (
-          !mutation.oldValue.includes("anim-fade-out") &&
-          mutation.target.classList.contains("anim-fade-out")
-        ) {
-          gsap.to(mutation.target, {
-            duration: 1,
-            opacity: 0,
-            y: 20,
-            onComplete: () => {
-              mutation.target.classList.add("d-none");
-              mutation.target.classList.remove("anim-fade-out");
-            }
-          });
-        }
-        if (
-          !mutation.oldValue.includes("anim-container-replace") &&
-          mutation.target.classList.contains("anim-container-replace")
-        ) {
-          mutation.target.classList.remove("anim-container-replace");
-          const itemsToHide = document.querySelectorAll(
-            `#${mutation.target.dataset.animHide} > *`
-          );
-          const itemsToShow = document.querySelectorAll(
-            `#${mutation.target.dataset.animShow} > *`
-          );
-          const tl = gsap.timeline({});
-          tl.to(itemsToHide, {
-            duration: 0.4,
-            stagger: 0.1,
-            opacity: 0,
-            y: -20,
-            onComplete: () => {
-              document
-                .querySelector(`#${mutation.target.dataset.animHide}`)
-                .classList.add("d-none");
-              document
-                .querySelector(`#${mutation.target.dataset.animShow}`)
-                .classList.remove("d-none");
-            }
-          }).staggerFromTo(
-            itemsToShow,
-            0.4,
-            {
-              y: 20,
-              opacity: 0
-            },
-            {
-              y: 0,
-              opacity: 1
-            },
-            0.1
-          );
-        }
-      }
-    });
-  });
-
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["class"],
-    attributeOldValue: true
-  });
-})();
-
-function anim_fade_in(item) {}
-function anim_fade_out(item) {}
-function anim_container_replace() {}
-
-/**
- * Elements that gain anim-container-replace will fade one container's children out (staggered) 
- * and another container's children in (staggered)
- * [data-anim-hide] is the container whose child elements will be hidden.
- * [data-anim-show] is the container whose child elements will be shown.
- */
 
 /**
  * Elements with .anim-scroll-fade-in will fade in and upwards on scroll
