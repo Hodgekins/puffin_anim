@@ -1,11 +1,117 @@
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Elements with .anim-fade-up will fade in and upwards on scroll
+ * Elements that gain anim-fade-in or anim-fade-out will fade in (or out)
+ *
+ * Elements that gain anim-container-replace will fade one container's children out (staggered) 
+ * and another container's children in (staggered)
+ * [data-anim-hide] is the container whose child elements will be hidden.
+ * [data-anim-show] is the container whose child elements will be shown.
  */
 (function() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === "attributes" && mutation.attributeName === "class") {
+        if (
+          !mutation.oldValue.includes("anim-fade-in") &&
+          mutation.target.classList.contains("anim-fade-in")
+        ) {
+          mutation.target.classList.remove("d-none");
+          gsap.set(mutation.target, {
+            opacity: 0,
+            y: 20
+          });
+          gsap.to(mutation.target, {
+            duration: 1,
+            opacity: 1,
+            y: 0,
+            onComplete: () => {
+              mutation.target.classList.remove("anim-fade-in");
+            }
+          });
+        }
+        if (
+          !mutation.oldValue.includes("anim-fade-out") &&
+          mutation.target.classList.contains("anim-fade-out")
+        ) {
+          gsap.to(mutation.target, {
+            duration: 1,
+            opacity: 0,
+            y: 20,
+            onComplete: () => {
+              mutation.target.classList.add("d-none");
+              mutation.target.classList.remove("anim-fade-out");
+            }
+          });
+        }
+        if (
+          !mutation.oldValue.includes("anim-container-replace") &&
+          mutation.target.classList.contains("anim-container-replace")
+        ) {
+          mutation.target.classList.remove("anim-container-replace");
+          const itemsToHide = document.querySelectorAll(
+            `#${mutation.target.dataset.animHide} > *`
+          );
+          const itemsToShow = document.querySelectorAll(
+            `#${mutation.target.dataset.animShow} > *`
+          );
+          const tl = gsap.timeline({});
+          tl.to(itemsToHide, {
+            duration: 0.4,
+            stagger: 0.1,
+            opacity: 0,
+            y: -20,
+            onComplete: () => {
+              document
+                .querySelector(`#${mutation.target.dataset.animHide}`)
+                .classList.add("d-none");
+              document
+                .querySelector(`#${mutation.target.dataset.animShow}`)
+                .classList.remove("d-none");
+            }
+          }).staggerFromTo(
+            itemsToShow,
+            0.4,
+            {
+              y: 20,
+              opacity: 0
+            },
+            {
+              y: 0,
+              opacity: 1
+            },
+            0.1
+          );
+        }
+      }
+    });
+  });
 
-  const elements = gsap.utils.toArray(".anim-fade-up");
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class"],
+    attributeOldValue: true
+  });
+})();
+
+function anim_fade_in(item) {}
+function anim_fade_out(item) {}
+function anim_container_replace() {}
+
+/**
+ * Elements that gain anim-container-replace will fade one container's children out (staggered) 
+ * and another container's children in (staggered)
+ * [data-anim-hide] is the container whose child elements will be hidden.
+ * [data-anim-show] is the container whose child elements will be shown.
+ */
+
+/**
+ * Elements with .anim-scroll-fade-in will fade in and upwards on scroll
+ */
+(function () {
+  const elements = gsap.utils.toArray(".anim-scroll-fade-in");
 
   elements.forEach((item) => {
     gsap.set(item, {
@@ -19,19 +125,18 @@ gsap.registerPlugin(ScrollTrigger);
       scrollTrigger: {
         trigger: item,
         start: "top 80%",
-        end: "bottom 20%",
+        end: "bottom 20%"
       }
-    })
+    });
   });
 })();
 
 /**
- * Elements with .anim-container-fade-up will fade their children in and 
- * upwards on scroll (staggered)
+ * Elements with .anim-container-scroll-fade-in will fade their children
+ * in and upwards on scroll (staggered)
  */
-(function() {
-
-  const elements = document.querySelectorAll(".anim-container-fade-up");
+(function () {
+  const elements = document.querySelectorAll(".anim-container-scroll-fade-in");
 
   elements.forEach((item) => {
     gsap.set(item.children, {
@@ -46,15 +151,14 @@ gsap.registerPlugin(ScrollTrigger);
       scrollTrigger: {
         trigger: item,
         start: "top 80%",
-        end: "bottom 20%",
+        end: "bottom 20%"
       }
-    })
+    });
   });
 })();
 
 /**
- * Elements with .anim-scroll-slow will scroll slightly slower creating a 
- * parallax effect.
+ * Elements with .anim-scroll-slow will scroll slightly slower creating a parallax effect.
  */
 (function () {
   elements = gsap.utils.toArray(".anim-scroll-slow");
@@ -65,22 +169,22 @@ gsap.registerPlugin(ScrollTrigger);
     });
     gsap.to(item, {
       y: 80,
-      ease: 'linear',
+      ease: "linear",
       scrollTrigger: {
         trigger: item,
         start: "top bottom",
-        end: () => (item.clientHeight + 160) + " top",
-        scrub: true,
+        end: () => item.clientHeight + 160 + " top",
+        scrub: true
       }
     });
   });
 })();
 
 /**
- * Elements with .anim-scroll-slow will scroll slightly faster creating a parallax effect.
+ * Elements with .anim-scroll-fast will scroll slightly faster creating a parallax effect.
  */
 (function () {
-  elements = gsap.utils.toArray(".anim-scroll-up");
+  elements = gsap.utils.toArray(".anim-scroll-fast");
 
   elements.forEach((item) => {
     gsap.set(item, {
@@ -88,49 +192,13 @@ gsap.registerPlugin(ScrollTrigger);
     });
     gsap.to(item, {
       y: -150,
-      ease: 'linear',
+      ease: "linear",
       scrollTrigger: {
         trigger: item,
         start: "top bottom",
         end: "bottom top",
-        scrub: true,
+        scrub: true
       }
     });
   });
 })();
-
-/**
- * This effect was designed for pretty menus.
- * .animContainerReplace is the trigger.
- * [data-anim-hide] is the container of elements that will be hidden.
- * [data-anim-show] is the container of element that will be shown.
- */
-(function() {
-  const elements = document.querySelectorAll(".animContainerReplace");
-
-  elements.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      const itemsToHide = document.querySelectorAll(`#${item.dataset.animHide} > *`);
-      const itemsToShow = document.querySelectorAll(`#${item.dataset.animShow} > *`);
-      const tl = gsap.timeline({});
-      tl.to(itemsToHide, {
-        duration: 0.4,
-        stagger: 0.1,
-        opacity: 0,
-        y: -20,
-        onComplete: () => {
-          document.querySelector(`#${item.dataset.animHide}`).classList.add("d-none");
-          document.querySelector(`#${item.dataset.animShow}`).classList.remove("d-none");
-        }
-      }).staggerFromTo(itemsToShow, 0.4, {
-        y: 20,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1
-      },
-      0.1);
-    });
-  });
-})();
-
