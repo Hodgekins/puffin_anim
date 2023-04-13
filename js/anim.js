@@ -17,6 +17,15 @@ function animFadeIn(selector) {
   });
 }
 
+(function () {
+  const elements = document.querySelectorAll(".anim-fade-in");
+  elements.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      animFadeIn(`#${item.dataset.animTarget}`);
+    });
+  });
+})();
+
 /**
  * Fades out and down the selector passed in.
  */
@@ -35,6 +44,15 @@ function animFadeOut(selector) {
   });
 }
 
+(function () {
+  const elements = document.querySelectorAll(".anim-fade-out");
+  elements.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      animFadeOut(`#${item.dataset.animTarget}`);
+    });
+  });
+})();
+
 /**
  * Fades in and up the selector passed in.
  */
@@ -52,6 +70,15 @@ function animContainerFadeIn(selector) {
     stagger: 0.1
   });
 }
+
+(function () {
+  const elements = document.querySelectorAll(".anim-container-fade-in");
+  elements.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      animContainerFadeIn(`#${item.dataset.animTarget}`);
+    });
+  });
+})();
 
 /**
  * Replace an element
@@ -85,6 +112,15 @@ function animReplace(selectorToHide, selectorToShow) {
   );
 }
 
+(function () {
+  const elements = document.querySelectorAll(".anim-replace");
+  elements.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      animReplace(`#${item.dataset.animHide}`, `#${item.dataset.animShow}`);
+    });
+  });
+})();
+
 /**
  * Replace containers' children staggered
  */ 
@@ -117,6 +153,15 @@ function animContainerReplace(selectorToHide, selectorToShow) {
     0.1
   );
 }
+
+(function () {
+  const elements = document.querySelectorAll(".anim-container-replace");
+  elements.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      animContainerReplace(`#${item.dataset.animHide}`, `#${item.dataset.animShow}`);
+    });
+  });
+})();
 
 // CLASSES
 
