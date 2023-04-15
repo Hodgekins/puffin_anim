@@ -20,8 +20,10 @@ function animFadeIn(selector) {
 (function () {
   const elements = document.querySelectorAll(".anim-fade-in");
   elements.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      animFadeIn(`#${item.dataset.animTarget}`);
+    item.addEventListener("click", (event) => { 
+      item.dataset.animTarget.split(" ").forEach((target) => {
+        animFadeIn(`#${target}`);
+      });
     });
   });
 })();
