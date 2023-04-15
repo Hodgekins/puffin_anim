@@ -139,13 +139,13 @@ elements.forEach((item) => {
     if (item.classList.contains("anim-container-fade-in")) {
       const targets = item.dataset.animContainerFadeInTarget.split(" ");
       targets.forEach((target) => {
-        animFadeOut(`#${target}`);
+        animContainerFadeIn(`#${target}`);
       });
     }
     if (item.classList.contains("anim-container-fade-out")) {
       const targets = item.dataset.animContainerFadeOutTarget.split(" ");
       targets.forEach((target) => {
-        animFadeOut(`#${target}`);
+        animContainerFadeOut(`#${target}`);
       });
     }
     if (item.classList.contains("anim-replace")) {
