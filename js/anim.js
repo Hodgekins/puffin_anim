@@ -120,50 +120,52 @@ function animContainerReplace(selectorToHide, selectorToShow) {
 
 // EVENTS
 
-const elements = document.querySelectorAll("[class*=anim]");
+(function () {
+  const elements = document.querySelectorAll("[class*=anim]");
 
-elements.forEach((item) => {
-  item.addEventListener("click", (event) => {
-    if (item.classList.contains("anim-fade-in")) {
-      const targets = item.dataset.animFadeInTarget.split(" ");
-      targets.forEach((target) => {
-        animFadeIn(`#${target}`);
-      });
-    }
-    if (item.classList.contains("anim-fade-out")) {
-      const targets = item.dataset.animFadeOutTarget.split(" ");
-      targets.forEach((target) => {
-        animFadeOut(`#${target}`);
-      });
-    }
-    if (item.classList.contains("anim-container-fade-in")) {
-      const targets = item.dataset.animContainerFadeInTarget.split(" ");
-      targets.forEach((target) => {
-        animContainerFadeIn(`#${target}`);
-      });
-    }
-    if (item.classList.contains("anim-container-fade-out")) {
-      const targets = item.dataset.animContainerFadeOutTarget.split(" ");
-      targets.forEach((target) => {
-        animContainerFadeOut(`#${target}`);
-      });
-    }
-    if (item.classList.contains("anim-replace")) {
-      const itemsTohide = item.dataset.animReplaceHide.split(" ");
-      const itemsToShow = item.dataset.animReplaceShow.split(" ");
-      targets.forEach((target, index) => {
-        animReplace(`#${target}`, itemsToShow[index]);
-      });
-    }
-    if (item.classList.contains("anim-container-replace")) {
-      const itemsTohide = item.dataset.animContainerReplaceHide.split(" ");
-      const itemsToShow = item.dataset.animContainerReplaceShow.split(" ");
-      targets.forEach((target, index) => {
-        animContainerReplace(`#${target}`, itemsToShow[index]);
-      });
-    }
+  elements.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      if (item.classList.contains("anim-fade-in")) {
+        const targets = item.dataset.animFadeInTarget.split(" ");
+        targets.forEach((target) => {
+          animFadeIn(`#${target}`);
+        });
+      }
+      if (item.classList.contains("anim-fade-out")) {
+        const targets = item.dataset.animFadeOutTarget.split(" ");
+        targets.forEach((target) => {
+          animFadeOut(`#${target}`);
+        });
+      }
+      if (item.classList.contains("anim-container-fade-in")) {
+        const targets = item.dataset.animContainerFadeInTarget.split(" ");
+        targets.forEach((target) => {
+          animContainerFadeIn(`#${target}`);
+        });
+      }
+      if (item.classList.contains("anim-container-fade-out")) {
+        const targets = item.dataset.animContainerFadeOutTarget.split(" ");
+        targets.forEach((target) => {
+          animContainerFadeOut(`#${target}`);
+        });
+      }
+      if (item.classList.contains("anim-replace")) {
+        const itemsTohide = item.dataset.animReplaceHide.split(" ");
+        const itemsToShow = item.dataset.animReplaceShow.split(" ");
+        targets.forEach((target, index) => {
+          animReplace(`#${target}`, itemsToShow[index]);
+        });
+      }
+      if (item.classList.contains("anim-container-replace")) {
+        const itemsTohide = item.dataset.animContainerReplaceHide.split(" ");
+        const itemsToShow = item.dataset.animContainerReplaceShow.split(" ");
+        targets.forEach((target, index) => {
+          animContainerReplace(`#${target}`, itemsToShow[index]);
+        });
+      }
+    });
   });
-});
+})();
 
 // SCROLL
 
