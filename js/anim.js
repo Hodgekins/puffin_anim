@@ -27,6 +27,7 @@ function animFadeOut(selector) {
     y: 0
   });
   gsap.to(item, {
+    duration: 0.4,
     opacity: 0,
     y: 20,
     onComplete: () => {
@@ -50,6 +51,26 @@ function animContainerFadeIn(selector) {
     opacity: 1,
     y: 0,
     stagger: 0.1
+  });
+}
+
+/**
+ * Fades out and down the selector passed in.
+ */
+function animContainerFadeOut(selector) {
+  const item = document.querySelector(selector); 
+  gsap.set(item.children, {
+    opacity: 1,
+    y: 0
+  });
+  gsap.to(item, {
+    duration: 0.4,
+    opacity: 0,
+    y: 20,
+    stagger: 0.1,
+    onComplete: () => {
+      item.classList.add("d-none");
+    }
   });
 }
 
@@ -152,14 +173,14 @@ function animContainerReplace(selectorToHide, selectorToShow) {
       if (item.classList.contains("anim-replace")) {
         const itemsTohide = item.dataset.animReplaceHide.split(" ");
         const itemsToShow = item.dataset.animReplaceShow.split(" ");
-        targets.forEach((target, index) => {
+        itemsTohide.forEach((target, index) => {
           animReplace(`#${target}`, itemsToShow[index]);
         });
       }
       if (item.classList.contains("anim-container-replace")) {
         const itemsTohide = item.dataset.animContainerReplaceHide.split(" ");
         const itemsToShow = item.dataset.animContainerReplaceShow.split(" ");
-        targets.forEach((target, index) => {
+        itemsTohide.forEach((target, index) => {
           animContainerReplace(`#${target}`, itemsToShow[index]);
         });
       }
