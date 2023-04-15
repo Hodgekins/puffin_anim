@@ -17,17 +17,6 @@ function animFadeIn(selector) {
   });
 }
 
-(function () {
-  const elements = document.querySelectorAll(".anim-fade-in");
-  elements.forEach((item) => {
-    item.addEventListener("click", (event) => { 
-      item.dataset.animTarget.split(" ").forEach((target) => {
-        animFadeIn(`#${target}`);
-      });
-    });
-  });
-})();
-
 /**
  * Fades out and down the selector passed in.
  */
@@ -46,15 +35,6 @@ function animFadeOut(selector) {
   });
 }
 
-(function () {
-  const elements = document.querySelectorAll(".anim-fade-out");
-  elements.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      animFadeOut(`#${item.dataset.animTarget}`);
-    });
-  });
-})();
-
 /**
  * Fades in and up the selector passed in.
  */
@@ -72,15 +52,6 @@ function animContainerFadeIn(selector) {
     stagger: 0.1
   });
 }
-
-(function () {
-  const elements = document.querySelectorAll(".anim-container-fade-in");
-  elements.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      animContainerFadeIn(`#${item.dataset.animTarget}`);
-    });
-  });
-})();
 
 /**
  * Replace an element
@@ -113,15 +84,6 @@ function animReplace(selectorToHide, selectorToShow) {
     0.1
   );
 }
-
-(function () {
-  const elements = document.querySelectorAll(".anim-replace");
-  elements.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      animReplace(`#${item.dataset.animHide}`, `#${item.dataset.animShow}`);
-    });
-  });
-})();
 
 /**
  * Replace containers' children staggered
@@ -156,16 +118,54 @@ function animContainerReplace(selectorToHide, selectorToShow) {
   );
 }
 
-(function () {
-  const elements = document.querySelectorAll(".anim-container-replace");
-  elements.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      animContainerReplace(`#${item.dataset.animHide}`, `#${item.dataset.animShow}`);
-    });
-  });
-})();
+// EVENTS
 
-// CLASSES
+const elements = document.querySelectorAll("[class*=anim]");
+
+elements.forEach((item) => {
+  item.addEventListener("click", (event) => {
+    if (item.classList.contains("anim-fade-in")) {
+      const targets = item.dataset.animFadeInTarget.split(" ");
+      targets.forEach((target) => {
+        animFadeIn(`#${target}`);
+      });
+    }
+    if (item.classList.contains("anim-fade-out")) {
+      const targets = item.dataset.animFadeOutTarget.split(" ");
+      targets.forEach((target) => {
+        animFadeOut(`#${target}`);
+      });
+    }
+    if (item.classList.contains("anim-container-fade-in")) {
+      const targets = item.dataset.animContainerFadeInTarget.split(" ");
+      targets.forEach((target) => {
+        animFadeOut(`#${target}`);
+      });
+    }
+    if (item.classList.contains("anim-container-fade-out")) {
+      const targets = item.dataset.animContainerFadeOutTarget.split(" ");
+      targets.forEach((target) => {
+        animFadeOut(`#${target}`);
+      });
+    }
+    if (item.classList.contains("anim-replace")) {
+      const itemsTohide = item.dataset.animReplaceHide.split(" ");
+      const itemsToShow = item.dataset.animReplaceShow.split(" ");
+      targets.forEach((target, index) => {
+        animReplace(`#${target}`, itemsToShow[index]);
+      });
+    }
+    if (item.classList.contains("anim-container-replace")) {
+      const itemsTohide = item.dataset.animContainerReplaceHide.split(" ");
+      const itemsToShow = item.dataset.animContainerReplaceShow.split(" ");
+      targets.forEach((target, index) => {
+        animContainerReplace(`#${target}`, itemsToShow[index]);
+      });
+    }
+  });
+});
+
+// SCROLL
 
 gsap.registerPlugin(ScrollTrigger);
 
