@@ -174,14 +174,14 @@ function animContainerReplace(selectorToHide, selectorToShow) {
         const itemsTohide = item.dataset.animReplaceHide.split(" ");
         const itemsToShow = item.dataset.animReplaceShow.split(" ");
         itemsTohide.forEach((target, index) => {
-          animReplace(`#${target}`, itemsToShow[index]);
+          animReplace(`#${target}`, `#${itemsToShow[index]}`);
         });
       }
       if (item.classList.contains("anim-container-replace")) {
         const itemsTohide = item.dataset.animContainerReplaceHide.split(" ");
         const itemsToShow = item.dataset.animContainerReplaceShow.split(" ");
         itemsTohide.forEach((target, index) => {
-          animContainerReplace(`#${target}`, itemsToShow[index]);
+          animContainerReplace(`#${target}`, `#${itemsToShow[index]}`);
         });
       }
     });
