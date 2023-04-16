@@ -14,6 +14,7 @@ function animFadeIn(selector) {
     duration: 0.4,
     opacity: 1,
     y: 0,
+    clearProps: true
   });
 }
 
@@ -32,7 +33,8 @@ function animFadeOut(selector) {
     y: 20,
     onComplete: () => {
       item.classList.add("d-none");
-    }
+    },
+    clearProps: true
   });
 }
 
@@ -50,7 +52,8 @@ function animContainerFadeIn(selector) {
     duration: 0.4,
     opacity: 1,
     y: 0,
-    stagger: 0.1
+    stagger: 0.1,
+    clearProps: true
   });
 }
 
@@ -70,7 +73,8 @@ function animContainerFadeOut(selector) {
     stagger: 0.1,
     onComplete: () => {
       item.classList.add("d-none");
-    }
+    },
+    clearProps: true
   });
 }
 
@@ -90,6 +94,7 @@ function animReplace(selectorToHide, selectorToShow) {
     onComplete: () => {
       itemToHide.classList.add("d-none");
       itemToShow.classList.remove("d-none");
+      gsap.set(itemToHide, {clearProps: true});
     }
   }).staggerFromTo(
     itemToShow,
@@ -100,7 +105,8 @@ function animReplace(selectorToHide, selectorToShow) {
     },
     {
       y: 0,
-      opacity: 1
+      opacity: 1,
+      clearProps: true
     },
     0.1
   );
@@ -123,6 +129,7 @@ function animContainerReplace(selectorToHide, selectorToShow) {
     onComplete: () => {
       itemToHide.classList.add("d-none");
       itemToShow.classList.remove("d-none");
+      gsap.set(itemToHide, {clearProps: true});
     }
   }).staggerFromTo(
     itemToShow.children,
@@ -133,7 +140,8 @@ function animContainerReplace(selectorToHide, selectorToShow) {
     },
     {
       y: 0,
-      opacity: 1
+      opacity: 1,
+      clearProps: true
     },
     0.1
   );
