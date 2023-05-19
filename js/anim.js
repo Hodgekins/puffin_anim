@@ -1,5 +1,7 @@
 // FUNCTIONS
 
+const duration = 0.1;
+
 /**
  * Fades in and up the selector passed in.
  */
@@ -11,7 +13,7 @@ function animFadeIn(selector) {
     y: 20
   });
   gsap.to(item, {
-    duration: 0.4,
+    duration: duration,
     opacity: 1,
     y: 0,
     clearProps: true
@@ -28,7 +30,7 @@ function animFadeOut(selector) {
     y: 0
   });
   gsap.to(item, {
-    duration: 0.4,
+    duration: duration,
     opacity: 0,
     y: 20,
     onComplete: () => {
@@ -49,7 +51,7 @@ function animContainerFadeIn(selector) {
     y: 20
   });
   gsap.to(item.children, {
-    duration: 0.4,
+    duration: duration,
     opacity: 1,
     y: 0,
     stagger: 0.1,
@@ -67,7 +69,7 @@ function animContainerFadeOut(selector) {
     y: 0
   });
   gsap.to(item, {
-    duration: 0.4,
+    duration: duration,
     opacity: 0,
     y: 20,
     stagger: 0.1,
@@ -88,7 +90,7 @@ function animReplace(selectorToHide, selectorToShow) {
 
   const tl = gsap.timeline({});
   tl.to(itemToHide, {
-    duration: 0.4,
+    duration: duration,
     opacity: 0,
     y: -20,
     onComplete: () => {
@@ -98,7 +100,7 @@ function animReplace(selectorToHide, selectorToShow) {
     }
   }).staggerFromTo(
     itemToShow,
-    0.4,
+    duration,
     {
       y: 20,
       opacity: 0
@@ -108,7 +110,7 @@ function animReplace(selectorToHide, selectorToShow) {
       opacity: 1,
       clearProps: true
     },
-    0.1
+    duration
   );
 }
 
@@ -122,7 +124,7 @@ function animContainerReplace(selectorToHide, selectorToShow) {
 
   const tl = gsap.timeline({});
   tl.to(itemToHide.children, {
-    duration: 0.4,
+    duration: duration,
     stagger: 0.1,
     opacity: 0,
     y: -20,
@@ -133,7 +135,7 @@ function animContainerReplace(selectorToHide, selectorToShow) {
     }
   }).staggerFromTo(
     itemToShow.children,
-    0.4,
+    duration,
     {
       y: 20,
       opacity: 0
@@ -143,7 +145,7 @@ function animContainerReplace(selectorToHide, selectorToShow) {
       opacity: 1,
       clearProps: true
     },
-    0.1
+    duration
   );
 }
 
