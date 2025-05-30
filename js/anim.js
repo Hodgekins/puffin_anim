@@ -203,28 +203,41 @@ function animContainerReplace(selectorToHide, selectorToShow) {
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Elements with .anim-scroll-fade-in will fade in and upwards on scroll
+ * .anim-scroll-fade-in elements fade in and rise on scroll.
+ *
+ * Modifier classes (value is **milliseconds**):
+ *   anim-delay-[int] — delay before start
+ *   anim-fade-[int]  — animation duration
+ *
+ * Example:
+ *   class="anim-scroll-fade-in anim-delay-300 anim-fade-750"
+ *     → delay = 0.3 s, duration = 0.75 s
  */
 (function () {
   const elements = gsap.utils.toArray(".anim-scroll-fade-in");
 
-  elements.forEach((item) => {
-    gsap.set(item, {
-      opacity: 0,
-      y: 20
-    });
-    gsap.to(item, {
-      duration: 1,
+  elements.forEach((el) => {
+    // pull ms values from class names, default 0 ms / 1000 ms
+    const delayMs = +(el.className.match(/anim-delay-(\d+)/)?.[1] || 0);
+    const fadeMs  = +(el.className.match(/anim-fade-(\d+)/)?.[1]  || 1000);
+
+    gsap.set(el, { opacity: 0, y: 20 });
+
+    gsap.to(el, {
+      delay: delayMs / 1000,
+      duration: fadeMs / 1000,
       opacity: 1,
       y: 0,
+      ease: "power1.out",
       scrollTrigger: {
-        trigger: item,
+        trigger: el,
         start: "top 80%",
         end: "bottom 20%"
       }
     });
   });
 })();
+
 
 /**
  * Elements with .anim-container-scroll-fade-in will fade their children
